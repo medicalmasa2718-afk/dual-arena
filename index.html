@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DUAL ARENA">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
   <title>DUAL ARENA - 2人対戦パーティバトル</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -54,26 +59,26 @@
           <button class="btn-play btn-cyan">プレイ開始</button>
         </div>
 
-        <!-- ゲーム2: タンクアリーナ -->
+        <!-- ゲーム2: サイコロロール・タンク -->
         <div class="game-card" data-game="tank">
           <div class="card-glow tank-glow"></div>
           <div class="card-icon">💥</div>
-          <h2>サイバー・タンク</h2>
-          <p class="card-desc">迷路で撃ち合う戦車バトル！壁で跳ね返るトリックショットを狙え！</p>
+          <h2>サイコロロール・タンク</h2>
+          <p class="card-desc">サイコロを振ってタンクを進め、相手の陣地に到達せよ！</p>
           <div class="card-tags">
-            <span>障害物アリーナ</span><span>跳弾ショット</span><span>3機撃破</span>
+            <span>サイコロゲーム</span><span>ターン制</span><span>3点先取</span>
           </div>
           <button class="btn-play btn-magenta">プレイ開始</button>
         </div>
 
-        <!-- ゲーム3: リフレックス決闘 -->
+        <!-- ゲーム3: ターン制グリッドバトル -->
         <div class="game-card" data-game="reflex">
           <div class="card-glow reflex-glow"></div>
           <div class="card-icon">🎯</div>
-          <h2>早押しリフレックス</h2>
-          <p class="card-desc">合図の瞬間に画面を叩け！お手つき厳禁、ミリ秒差の反射神経勝負！</p>
+          <h2>ターン制グリッドバトル</h2>
+          <p class="card-desc">駒を置き合い、相手を囲んで得点を競うボードゲーム。</p>
           <div class="card-tags">
-            <span>反射神経</span><span>心理戦</span><span>3本先取</span>
+            <span>グリッド</span><span>ターン制</span><span>3本先取</span>
           </div>
           <button class="btn-play btn-yellow">プレイ開始</button>
         </div>
@@ -176,18 +181,17 @@
             <p><strong>ルール:</strong> 相手のゴールにパックを入れると1点。5点先取で勝利。中央に出るアイテムを取ると有利に！</p>
           </div>
           <div class="guide-item">
-            <h3>💥 サイバー・タンク</h3>
-            <p><strong>PC:</strong><br>
-               ・P1: [W/S] 前進後退、[A/D] 旋回、[F または スペース] 砲撃<br>
-               ・P2: [↑/↓] 前進後退、[←/→] 旋回、[ENTER または L] 砲撃</p>
-            <p><strong>スマホ:</strong> 画面端のバーチャルスティックで移動、FIREボタンで砲撃！</p>
-            <p><strong>ルール:</strong> 弾は壁で2回跳ね返ります。相手の弾を避けて3回撃破した方の勝利！</p>
+            <h3>💥 サイコロロール・タンク</h3>
+            <p><strong>PC:</strong> P1は <code>Enter</code>、P2は <code>Space</code> キーでサイコロを振ります。</p>
+            <p><strong>スマホ:</strong> 画面端のバーチャルスティックで移動、FIRE ボタンでサイコロを振ります。</p>
+            <p><strong>ルール:</strong> サイコロ (1‑6) の出目分だけタンクを前進させ、相手のスタート列を越えたらラウンド勝利。3 ラウンド先取でゲーム勝利。</p>
           </div>
           <div class="guide-item">
-            <h3>🎯 早押しリフレックス</h3>
-            <p><strong>PC:</strong> P1は [W] または [SPACE]、P2は [↑] または [ENTER] キー。</p>
-            <p><strong>スマホ:</strong> 画面の自分の陣地をタップ！</p>
-            <p><strong>ルール:</strong> 「HIT!!」の合図が出た瞬間に素早く押す！合図前のフライングはお手つきで相手に得点。3本先取で勝利！</p>
+            <h3>🎯 ターン制グリッドバトル</h3>
+            <p><strong>PC:</strong> P1は <code>W / A / S / D</code>、P2は 矢印キーで駒を操作し、<code>Enter</code> / <code>Space</code> で確定。</p>
+            <p><strong>スマホ:</strong> 画面上の格子をタップで駒を置き、相手の駒を囲むと得点。</p>
+            <p><strong>ルール:</strong> 1 ラウンドで相手駒を囲むか捕獲すると1点。3点先取で勝利。</p>
+          </div>
         </div>
         <button id="btn-close-guide" class="btn-action secondary">閉じる</button>
       </div>
@@ -197,25 +201,18 @@
     <div id="qr-modal" class="modal-overlay hidden">
       <div class="modal-content qr-box">
         <h2>📱 スマホ・タブレットで遊ぶ</h2>
-        <p class="qr-desc">同じWi-Fiに接続したスマホのカメラでQRコードを読み取ると、このゲームをスマホでプレイできます！</p>
+        <p class="qr-desc">同じWi‑Fiに接続したスマホのカメラでQRコードを読み取ると、このゲームをスマホでプレイできます！</p>
         <div class="qr-image-container">
-          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://medicalmasa2718-afk.github.io/dual-arena/" alt="QRコード" width="220" height="220">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://medicalmasa2718-afk.github.io/dual-arena/" alt="QR Code" />
         </div>
         <div class="qr-url-box">
-          <span>URL: </span><strong id="qr-url-text">https://medicalmasa2718-afk.github.io/dual-arena/</strong>
+          <input type="text" readonly value="https://medicalmasa2718-afk.github.io/dual-arena/" />
+          <p class="qr-note">Safari で「Add to Home Screen」すると、ホーム画面から直接起動できます。</p>
         </div>
-        <p class="qr-note">※ スマホとPCが同じWi-Fi（ネットワーク）に接続されている必要があります。</p>
         <button id="btn-close-qr" class="btn-action secondary">閉じる</button>
       </div>
     </div>
 
   </div>
-
-  <!-- スクリプト読み込み -->
-  <script src="js/audio.js"></script>
-  <script src="js/air-hockey.js"></script>
-  <script src="js/tank-arena.js"></script>
-  <script src="js/reflex-duel.js"></script>
-  <script src="js/main.js"></script>
 </body>
 </html>
