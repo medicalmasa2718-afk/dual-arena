@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>DUAL ARENA - 2人対戦パーティバトル</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- メインコンテナ -->
+  <div id="app-container">
+
+    <!-- トップバー（共通） -->
+    <header id="top-bar">
+      <button id="btn-back-menu" class="icon-btn hidden" title="メニューに戻る">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>MENU</span>
+      </button>
+      <div id="header-title">DUAL ARENA</div>
+      <div class="header-controls">
+        <button id="btn-mobile-connect" class="icon-btn" title="スマホで遊ぶ（QRコード）">
+          <span>📱 スマホで開く</span>
+        </button>
+        <button id="btn-sound" class="icon-btn" title="サウンド切替">
+          <span id="sound-icon">🔊</span>
+        </button>
+        <button id="btn-fullscreen" class="icon-btn" title="全画面表示">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 1. メニュー画面 -->
+    <section id="menu-screen" class="screen active">
+      <div class="hero-banner">
+        <h1 class="glitch-title" data-text="DUAL ARENA">DUAL ARENA</h1>
+        <p class="subtitle">1台の端末で白熱！ 2人対戦バトルゲーム</p>
+        <div class="device-hint">
+          <span class="badge">PC</span> キーボード操作 (WASD vs 矢印) &nbsp;|&nbsp; 
+          <span class="badge">スマホ/タブレット</span> 画面分割タッチ対戦
+        </div>
+      </div>
+
+      <div class="games-grid">
+        <!-- ゲーム1: エアホッケー -->
+        <div class="game-card" data-game="hockey">
+          <div class="card-glow hockey-glow"></div>
+          <div class="card-icon">⚡</div>
+          <h2>ネオン・エアホッケー</h2>
+          <p class="card-desc">超高速パックを打ち返せ！アイテムで巨大化やマルチボール発動！</p>
+          <div class="card-tags">
+            <span>物理アクション</span><span>アイテムあり</span><span>5点先取</span>
+          </div>
+          <button class="btn-play btn-cyan">プレイ開始</button>
+        </div>
+
+        <!-- ゲーム2: タンクアリーナ -->
+        <div class="game-card" data-game="tank">
+          <div class="card-glow tank-glow"></div>
+          <div class="card-icon">💥</div>
+          <h2>サイバー・タンク</h2>
+          <p class="card-desc">迷路で撃ち合う戦車バトル！壁で跳ね返るトリックショットを狙え！</p>
+          <div class="card-tags">
+            <span>障害物アリーナ</span><span>跳弾ショット</span><span>3機撃破</span>
+          </div>
+          <button class="btn-play btn-magenta">プレイ開始</button>
+        </div>
+
+        <!-- ゲーム3: リフレックス決闘 -->
+        <div class="game-card" data-game="reflex">
+          <div class="card-glow reflex-glow"></div>
+          <div class="card-icon">🎯</div>
+          <h2>早押しリフレックス</h2>
+          <p class="card-desc">合図の瞬間に画面を叩け！お手つき厳禁、ミリ秒差の反射神経勝負！</p>
+          <div class="card-tags">
+            <span>反射神経</span><span>心理戦</span><span>3本先取</span>
+          </div>
+          <button class="btn-play btn-yellow">プレイ開始</button>
+        </div>
+      </div>
+
+      <!-- 操作ガイドモーダル表示ボタン -->
+      <div class="footer-hint">
+        <button id="btn-show-guide" class="text-btn">📖 詳しい操作説明を見る</button>
+      </div>
+    </section>
+
+    <!-- 2. ゲームプレイ画面 -->
+    <section id="game-screen" class="screen">
+      <!-- ゲーム用Canvas（ホッケー・タンク用） -->
+      <div id="canvas-container">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <!-- 早押しリフレックス用HTMLビュー（専用UI） -->
+      <div id="reflex-container" class="hidden">
+        <div id="reflex-p2" class="reflex-zone p2-zone">
+          <div class="zone-label">PLAYER 2</div>
+          <div class="zone-control-hint">タップ または [↑ / ENTER]</div>
+          <div class="zone-time" id="time-p2"></div>
+        </div>
+        <div id="reflex-center">
+          <div id="reflex-status" class="reflex-msg">READY...</div>
+          <div id="reflex-scores">
+            <span id="rf-score-p1" class="score-p1">0</span>
+            <span class="score-divider">-</span>
+            <span id="rf-score-p2" class="score-p2">0</span>
+          </div>
+        </div>
+        <div id="reflex-p1" class="reflex-zone p1-zone">
+          <div class="zone-label">PLAYER 1</div>
+          <div class="zone-control-hint">タップ または [W / SPACE]</div>
+          <div class="zone-time" id="time-p1"></div>
+        </div>
+      </div>
+
+      <!-- モバイル用バーチャルコントロール（タンク戦用） -->
+      <div id="mobile-controls" class="hidden">
+        <!-- P1用（左側） -->
+        <div id="p1-controls" class="touch-control-group">
+          <div id="p1-stick" class="joystick-base">
+            <div id="p1-stick-nub" class="joystick-nub"></div>
+          </div>
+          <button id="p1-fire" class="fire-btn p1-fire-btn">FIRE</button>
+        </div>
+        <!-- P2用（右側） -->
+        <div id="p2-controls" class="touch-control-group">
+          <div id="p2-stick" class="joystick-base">
+            <div id="p2-stick-nub" class="joystick-nub"></div>
+          </div>
+          <button id="p2-fire" class="fire-btn p2-fire-btn">FIRE</button>
+        </div>
+      </div>
+
+      <!-- ゲーム中HUD（スコア、ラウンド情報） -->
+      <div id="game-hud">
+        <div class="hud-player p1-hud">
+          <span class="hud-name">P1 (BLUE)</span>
+          <span id="hud-score-p1" class="hud-score">0</span>
+        </div>
+        <div id="hud-center-info">VS</div>
+        <div class="hud-player p2-hud">
+          <span id="hud-score-p2" class="hud-score">0</span>
+          <span class="hud-name">P2 (RED)</span>
+        </div>
+      </div>
+
+      <!-- カウントダウン / アナウンス オーバーレイ -->
+      <div id="announcement-overlay" class="hidden">
+        <div id="announcement-text">READY</div>
+      </div>
+
+      <!-- 勝利モーダル -->
+      <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content victory-box">
+          <div id="victory-trophy">🏆</div>
+          <h2 id="victory-winner">PLAYER 1 WINS!</h2>
+          <p id="victory-detail">5 - 3 で勝利！</p>
+          <div class="victory-actions">
+            <button id="btn-rematch" class="btn-action primary">もう一度遊ぶ</button>
+            <button id="btn-return-menu" class="btn-action secondary">ゲーム選択へ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 操作ガイドモーダル -->
+    <div id="guide-modal" class="modal-overlay hidden">
+      <div class="modal-content guide-box">
+        <h2>🎮 操作方法・対戦ルール</h2>
+        <div class="guide-scroll">
+          <div class="guide-item">
+            <h3>⚡ ネオン・エアホッケー</h3>
+            <p><strong>PC:</strong> P1は [W, A, S, D] キー、P2は [↑, ↓, ←, →] 矢印キーでマレットを動かします。</p>
+            <p><strong>スマホ/タブレット:</strong> 画面の自陣側を指でドラッグしてマレットを直感的に操作！</p>
+            <p><strong>ルール:</strong> 相手のゴールにパックを入れると1点。5点先取で勝利。中央に出るアイテムを取ると有利に！</p>
+          </div>
+          <div class="guide-item">
+            <h3>💥 サイバー・タンク</h3>
+            <p><strong>PC:</strong><br>
+               ・P1: [W/S] 前進後退、[A/D] 旋回、[F または スペース] 砲撃<br>
+               ・P2: [↑/↓] 前進後退、[←/→] 旋回、[ENTER または L] 砲撃</p>
+            <p><strong>スマホ:</strong> 画面端のバーチャルスティックで移動、FIREボタンで砲撃！</p>
+            <p><strong>ルール:</strong> 弾は壁で2回跳ね返ります。相手の弾を避けて3回撃破した方の勝利！</p>
+          </div>
+          <div class="guide-item">
+            <h3>🎯 早押しリフレックス</h3>
+            <p><strong>PC:</strong> P1は [W] または [SPACE]、P2は [↑] または [ENTER] キー。</p>
+            <p><strong>スマホ:</strong> 画面の自分の陣地をタップ！</p>
+            <p><strong>ルール:</strong> 「HIT!!」の合図が出た瞬間に素早く押す！合図前のフライングはお手つきで相手に得点。3本先取で勝利！</p>
+        </div>
+        <button id="btn-close-guide" class="btn-action secondary">閉じる</button>
+      </div>
+    </div>
+
+    <!-- スマホ接続用QRコードモーダル -->
+    <div id="qr-modal" class="modal-overlay hidden">
+      <div class="modal-content qr-box">
+        <h2>📱 スマホ・タブレットで遊ぶ</h2>
+        <p class="qr-desc">同じWi-Fiに接続したスマホのカメラでQRコードを読み取ると、このゲームをスマホでプレイできます！</p>
+        <div class="qr-image-container">
+          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://responded-bolt-geo-marsh.trycloudflare.com" alt="QRコード" width="220" height="220">
+        </div>
+        <div class="qr-url-box">
+          <span>URL: </span><strong id="qr-url-text">https://responded-bolt-geo-marsh.trycloudflare.com</strong>
+        </div>
+        <p class="qr-note">※ スマホとPCが同じWi-Fi（ネットワーク）に接続されている必要があります。</p>
+        <button id="btn-close-qr" class="btn-action secondary">閉じる</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- スクリプト読み込み -->
+  <script src="js/audio.js"></script>
+  <script src="js/air-hockey.js"></script>
+  <script src="js/tank-arena.js"></script>
+  <script src="js/reflex-duel.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
