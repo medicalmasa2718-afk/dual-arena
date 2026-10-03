@@ -70,12 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (gameType === 'tank') {
       gameCanvas.classList.remove('hidden');
       reflexContainer.classList.add('hidden');
-      currentGame = new window.TankArenaGame(gameCanvas, onGameOver, updateHud);
+      // Use DiceTankGame (turn‑based dice roll board game)
+      currentGame = new window.DiceTankGame(gameCanvas, onGameOver, updateHud);
       currentGame.start();
     } else if (gameType === 'reflex') {
       gameCanvas.classList.add('hidden');
       reflexContainer.classList.remove('hidden');
-      currentGame = new window.ReflexDuelGame(reflexContainer, onGameOver, updateHud);
+      // Use GridBattleGame (turn‑based grid board game)
+      currentGame = new window.GridBattleGame(reflexContainer, onGameOver, updateHud);
       currentGame.start();
     }
   };

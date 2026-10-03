@@ -21,6 +21,7 @@ class DiceTankGame {
     this.diceResult = null;
     this.message = '';
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleTap = this.handleTap.bind(this);
   }
 
   start() {
@@ -29,13 +30,21 @@ class DiceTankGame {
     this.resize();
     this.running = true;
     window.addEventListener('keydown', this.handleKeyDown);
+    this.canvas.addEventListener('pointerdown', this.handleTap);
     this.loop();
   }
 
   stop() {
     this.running = false;
     window.removeEventListener('keydown', this.handleKeyDown);
+    this.canvas.removeEventListener('pointerdown', this.handleTap);
     cancelAnimationFrame(this.animationId);
+  }
+
+  // タップ/クリックで、現在の手番のプレイヤーがサイコロを振る
+  handleTap() {
+    if (!this.running) return;
+    this.takeTurn(this.turn);
   }
 
   resize() {
